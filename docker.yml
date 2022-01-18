@@ -1,5 +1,4 @@
 ---
-
 -  hosts: localhost
    any_errors_fatal: true
    gather_facts: no
@@ -39,16 +38,18 @@
  #      gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
 
-   - name: Install Docker-compose
+   - name: Install Docker-repo
+     tags: repo
      shell: "yum-config-manager --add-repo  https://download.docker.com/linux/centos/docker-ce.repo"
 
-   - name: Add Docker repo
-     get_url:
-       url: https://download.docker.com/linux/centos/docker-ce.repo
-       dest: /etc/yum.repos.d/docker-ce.repo
+#   - name: Add Docker repo
+#     get_url:
+#       url: https://download.docker.com/linux/centos/docker-ce.repo
+#       dest: /etc/yum.repos.d/docker-ce.repo
 
 
    - name: Install Docker Engine
+     tags: engine
      yum:
       name: 
         - docker-ce
@@ -58,16 +59,19 @@
 
 
    - name: Install Docker-compose
+     tags: compose 
      shell: "curl -L \"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
 
    - name: Moving stuff
      shell: "mv /usr/local/bin/docker-compose /usr/bin/docker-compose"
 
    - name: Add permissions for compose directory
+     tags: permission
      shell: "chmod +x /usr/local/bin/docker-compose"
 
 
   - name: Start Docker daemon
+    tags: systemctl
     systemd:
       name: docker
       state: started
