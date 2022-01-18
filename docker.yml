@@ -70,11 +70,11 @@
      shell: "chmod +x /usr/local/bin/docker-compose"
 
 
-  - name: Start Docker daemon
-    tags: systemctl
-    systemd:
-      name: docker
-      state: started
-      enabled: yes
-      masked: no
+   - name: Start Docker daemon
+     tags: systemctl
+     systemd:
+       name: docker
+       state: started
+       enabled: yes
+       masked: no
 
