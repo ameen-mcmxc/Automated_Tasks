@@ -1,4 +1,6 @@
 # Automated_Tasks
-I automated several tasks to save time and effort
-Docker installaton 
-Kick-start server
+I automated several tasks to save time and effort.
+
+Docker and Docker-Compose installaton on CentOS-7 
+
+Kick-start server installation and configuration.
