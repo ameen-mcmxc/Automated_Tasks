@@ -68,8 +68,7 @@
 
    - name: Add permissions for compose directory
      tags: perm
-     shell: "chmod +x /usr/local/bin/docker-compose"
-
+     shell: "chmod +x /usr/bin/docker-compose"
 
    - name: Start Docker daemon
      tags: systemctl
