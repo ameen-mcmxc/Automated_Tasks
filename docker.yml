@@ -1,47 +1,73 @@
 ---
-# tasks file for centos
 
--  hosts: local_c3
+-  hosts: localhost
+   any_errors_fatal: true
+   gather_facts: no
+
+
    tasks:
-   - name: Install EPEL repo
-     yum_repository:
-       name: CentOS-Extras
-       description: "Centos 7 Extras"
-       baseurl: "http://mirror.centos.org/centos/7/extras/x86_64/"
-       gpgcheck: yes
-       gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+   - name: Install General Essential packages
+     tags: essentials
+     yum: 
+       name: 
+         - epel-release
+         - nano
+         - net-tools
+         - tcpdump
+         - nmap
+         - wireshark
+         - git
+         - wget
+         - iproute
+         - psmisc
+         - chrony
+         - telnet
+         - iptables-services
+         - yum-utils
+         - device-mapper-persistent-data
+         - lvm2
+       state: latest
 
 
-  - name: Install yum utils
-    yum:
-      name: [ yum-utils, device-mapper-persistent-data, lvm2, epel-release]
+ #  - name: Install EPEL repo
+ #    yum_repository:
+ #      name: CentOS-Extras
+ #      description: "Centos 7 Extras"
+ #      baseurl: "http://mirror.centos.org/centos/7/extras/x86_64/"
+ #      gpgcheck: yes
+ #      gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+
+   - name: Install Docker-compose
+     shell: "yum-config-manager --add-repo  https://download.docker.com/linux/centos/docker-ce.repo"
+
+   - name: Add Docker repo
+     get_url:
+       url: https://download.docker.com/linux/centos/docker-ce.repo
+       dest: /etc/yum.repos.d/docker-ce.repo
+
+
+   - name: Install Docker Engine
+     yum:
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
       state: latest
 
 
-  - name: Add Docker repo
-      get_url:
-      url: https://download.docker.com/linux/centos/docker-ce.repo
-      dest: /etc/yum.repos.d/docker-ce.repo
+   - name: Install Docker-compose
+     shell: "curl -L \"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+
+   - name: Moving stuff
+     shell: "mv /usr/local/bin/docker-compose /usr/bin/docker-compose"
+
+   - name: Add permissions for compose directory
+     shell: "chmod +x /usr/local/bin/docker-compose"
 
 
-  - name: Install Docker
-    yum:
-      name: docker-ce
-      name: docker-ce, docker-ce-cli, containerd.io
-      state: latest
-
-
-  - name: install docker-compose
-      shell: "curl -L \"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
-
-  - name: moving stuff
-      shell: "mv /usr/local/bin/docker-compose /usr/bin/docker-compose"
-
-  - name: add permissions for compose directory
-      shell: "chmod +x /usr/local/bin/docker-compose"
-
-
-  - name: start docker daemon
+  - name: Start Docker daemon
     systemd:
       name: docker
       state: started
