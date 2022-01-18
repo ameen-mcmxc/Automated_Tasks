@@ -15,7 +15,6 @@
          - net-tools
          - tcpdump
          - nmap
-         - wireshark
          - git
          - wget
          - iproute
