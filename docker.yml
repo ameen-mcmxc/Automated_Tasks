@@ -1,0 +1,50 @@
+---
+# tasks file for centos
+
+-  hosts: local_c3
+   tasks:
+   - name: Install EPEL repo
+     yum_repository:
+       name: CentOS-Extras
+       description: "Centos 7 Extras"
+       baseurl: "http://mirror.centos.org/centos/7/extras/x86_64/"
+       gpgcheck: yes
+       gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+
+  - name: Install yum utils
+    yum:
+      name: [ yum-utils, device-mapper-persistent-data, lvm2, epel-release]
+      state: latest
+
+
+  - name: Add Docker repo
+      get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+
+
+  - name: Install Docker
+    yum:
+      name: docker-ce
+      name: docker-ce, docker-ce-cli, containerd.io
+      state: latest
+
+
+  - name: install docker-compose
+      shell: "curl -L \"https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+
+  - name: moving stuff
+      shell: "mv /usr/local/bin/docker-compose /usr/bin/docker-compose"
+
+  - name: add permissions for compose directory
+      shell: "chmod +x /usr/local/bin/docker-compose"
+
+
+  - name: start docker daemon
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
+      masked: no
+
