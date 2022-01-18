@@ -6,6 +6,11 @@
 
    tasks:
 
+   - name: Update the machine
+     tags: upd
+     yum:
+       update_only: yes
+
    - name: Install General Essential packages
      tags: essentials
      yum: 
