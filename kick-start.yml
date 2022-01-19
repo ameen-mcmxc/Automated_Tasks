@@ -127,8 +127,8 @@
      shell: |
        firewall-cmd --reload
        umount /mnt
-       cp anaconda-ks.cfg  /var/ftp/pub/
-       chmod 755 /var/ftp/pub/anaconda-ks.cfg
+    # cp anaconda-ks.cfg  /var/ftp/pub/
+    # chmod 755 /var/ftp/pub/anaconda-ks.cfg
 
 
    - name: Create anaconda file 
@@ -140,6 +140,6 @@
        mode: '755'
 
    - name: Time to mount
-     tags: validation
+     tags: anaconda
      shell: ksvalidator /var/ftp/pub/anaconda-ks.cfg
      #fail_when: rc !== 0
