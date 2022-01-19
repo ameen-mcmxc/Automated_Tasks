@@ -48,23 +48,23 @@
        src: /root/Automated_Tasks/files/dnsmasq.txt
        dest: /etc/dnsmasq.conf
        owner: root
-       mode: '755'
+       mode: '644'
 
 
    - name: Create and copy some files
+     tags: pxe
      shell: |
        cp -r /usr/share/syslinux/* /var/lib/tftpboot
        mkdir /var/lib/tftpboot/pxelinux.cfg
-       touch /var/lib/tftpboot/pxelinux.cfg/default
-
-  
+       
+      
    - name: Create default file 
-     tags: dafault
+     tags: pxe, dafault
      ansible.builtin.template:
        src: /root/Automated_Tasks/files/default.txt
        dest: /var/lib/tftpboot/pxelinux.cfg/default
        owner: root
-       mode: '755'
+       mode: '644'
 
    - name: Download CentOS-7 minimal Image
      tags: url
@@ -79,10 +79,10 @@
        cd  /dev/
        chmod 777 loop0
        mount -o loop /root/CentOS-7-x86_64-Minimal-2009.iso  /mnt
-       mkdir /var/lib/tftpboot/centos7
-       cp /mnt/images/pxeboot/vmlinuz  /var/lib/tftpboot/centos7
-       cp /mnt/images/pxeboot/initrd.img  /var/lib/tftpboot/centos7
-       cp -r /mnt/*  /var/ftp/pub/
+      # mkdir /var/lib/tftpboot/centos7
+      # cp /mnt/images/pxeboot/vmlinuz  /var/lib/tftpboot/centos7
+      # cp /mnt/images/pxeboot/initrd.img  /var/lib/tftpboot/centos7
+      # cp -r /mnt/*  /var/ftp/pub/
 
 
 
