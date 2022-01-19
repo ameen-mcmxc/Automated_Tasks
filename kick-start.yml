@@ -31,6 +31,7 @@
          - syslinux
          - tftp-server
          - vsftpd
+         - pykickstart
        state: latest
 
    - name: Set NTP & copy backup "dnsmasq.conf" file
@@ -58,7 +59,7 @@
 
   
    - name: Create default file 
-     tags:
+     tags: dafault
      ansible.builtin.template:
        src: /root/Automated_Tasks/files/default.txt
        dest: /var/lib/tftpboot/pxelinux.cfg/default
@@ -66,56 +67,69 @@
        mode: '755'
 
    - name: Download CentOS-7 minimal Image
+     tags: url
      get_url:
        url: http://mirror.imt-systems.com/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
        dest: /root/
 
-•	cd  /dev/
-•	chmod 777 loop0
-•	mount -o loop /path/to/centos-dvd.iso  /mnt
-•	mkdir /var/lib/tftpboot/centos7
-•	cp /mnt/images/pxeboot/vmlinuz  /var/lib/tftpboot/centos7
-•	cp /mnt/images/pxeboot/initrd.img  /var/lib/tftpboot/centos7
-•	
 
-
-•	cp -r /mnt/*  /var/ftp/pub/ 
-•	systemctl start dnsmasq
-•	systemctl status dnsmasq
-•	systemctl start vsftpd
-•	systemctl status vsftpd
-•	systemctl enable dnsmasq
-•	systemctl enable vsftpd
+   - name: Time to mount
+     tags: mnt
+     shell: |
+       cd  /dev/
+       chmod 777 loop0
+       mount -o loop /path/to/centos-dvd.iso  /mnt
+       mkdir /var/lib/tftpboot/centos7
+       cp /mnt/images/pxeboot/vmlinuz  /var/lib/tftpboot/centos7
+       cp /mnt/images/pxeboot/initrd.img  /var/lib/tftpboot/centos7
+       cp -r /mnt/*  /var/ftp/pub/
 
 
 
-•	firewall-cmd --add-service=ftp --permanent  	## Port 21
-•	firewall-cmd --add-service=dns --permanent  	## Port 53
-•	firewall-cmd --add-service=dhcp --permanent  	## Port 67
-•	firewall-cmd --add-port=69/udp --permanent  	## Port for TFTP
-•	firewall-cmd --add-port=4011/udp --permanent  ## Port for ProxyDHCP
-•	firewall-cmd --reload  ## Apply rules
+   - name: Start 
+     tags: systemctl
+     systemd:
+       name: "{{ item }}"
+       state: started
+       enabled: yes
+       masked: no
+    with_items:
+      - dnsmasq
+      - vsftpd
 
-•	umount /mnt
+   - name: Add ports in firewall
+     ansible.posix.firewalld:
+       port: "{{ item }}"
+       zone: public
+       permanent: yes
+       state: enabled
+       immediate: true
+     with_items: 
+       - ftp  # 21
+       - dns   # 53
+       - dhcp   # 67
+       - 69/udp # TFTP
+       - 4011/udp  # DHCP proxy
 
 
-
-#   - name: Add Docker repo
-#     get_url:
-#       url: https://download.docker.com/linux/centos/docker-ce.repo
-#       dest: /etc/yum.repos.d/docker-ce.repo
-
-
-#   - name: 
-#     tags:  
-#     shell: 
+   - name: Time to mount
+     tags: mnt
+     shell: |
+       firewall-cmd --reload
+       umount /mnt
+       cp anaconda-ks.cfg  /var/ftp/pub/
+       chmod 755 /var/ftp/pub/anaconda-ks.cfg
 
 
-#   - name: Start 
-#     tags: systemctl
-#     systemd:
-#       name: 
-#       state: started
-#       enabled: yes
-#       masked: no
+   - name: Create anaconda file 
+     tags: anaconda
+     ansible.builtin.template:
+       src: /root/Automated_Tasks/files/anaconda.txt
+       dest: /var/ftp/pub/anaconda-ks.cfg
+       owner: root
+       mode: '755'
+
+   - name: Time to mount
+     tags: validation
+     shell: ksvalidator /var/ftp/pub/anaconda-ks.cfg
 
