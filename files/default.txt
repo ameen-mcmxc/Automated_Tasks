@@ -1,0 +1,12 @@
+default 1   # nuumer 1 Wahl von  boot menue auswählen
+prompt 0
+timeout 10
+ONTIMEOUT local
+
+menu title ########## PXE Boot Menu ##########
+
+
+label 1
+menu label ^1) Install CentOS 7 x64 with Local Repo using Kickstart
+kernel centos7/vmlinuz
+append initrd=centos7/initrd.img inst.ks=ftp://10.0.0.20/pub/anaconda-ks.cfg inst.vnc inst.vncpassword=rootroot
