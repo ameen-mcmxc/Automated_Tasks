@@ -43,7 +43,7 @@
 
 
    - name: Create dnsmasq file 
-     tags:
+     tags: dnsmasq
      ansible.builtin.template:
        src: /root/Automated_Tasks/files/dnsmasq.txt
        dest: /etc/dnsmasq.conf
