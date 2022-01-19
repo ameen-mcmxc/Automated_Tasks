@@ -12,7 +12,7 @@ auth --enableshadow --passalgo=sha512
 
 
 # Use Network Installation
-url --url=ftp://10.0.0.50/pub/
+url --url=ftp://10.0.0.20/pub/
 
 # Run the Setup Agent on first boot
 firstboot --enable
