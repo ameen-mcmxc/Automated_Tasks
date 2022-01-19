@@ -97,19 +97,27 @@
       - dnsmasq
       - vsftpd
 
-   - name: Add ports in firewall
+
+   - name: Permit traffic in default zone for some services
      ansible.posix.firewalld:
-       port: "{{ item }}"
-       zone: public
+       service: "{{ item }}"
        permanent: yes
        state: enabled
-       immediate: true
-     with_items: 
-       - ftp  # 21
-       - dns   # 53
-       - dhcp   # 67
-       - 69/udp # TFTP
-       - 4011/udp  # DHCP proxy
+     with_items:
+       - ftp
+       - dns
+       - dhcp
+
+
+   - name: Open some ports in firewall
+     ansible.posix.firewalld:
+       port: "{{ item }}"
+       permanent: yes
+       state: enabled
+     with_items:
+       - 69/udp
+       - 4011/udp
+    
 
 
    - name: Time to mount
@@ -132,4 +140,3 @@
    - name: Time to mount
      tags: validation
      shell: ksvalidator /var/ftp/pub/anaconda-ks.cfg
-
