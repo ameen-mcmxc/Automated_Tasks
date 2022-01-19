@@ -76,14 +76,14 @@
    - name: Time to mount
      tags: mnt
      shell: |
-# cd  /dev/
-# chmod 777 loop0
        mount -o loop /root/CentOS-7-x86_64-Minimal-2009.iso  /mnt
        mkdir /var/lib/tftpboot/centos7
        cp /mnt/images/pxeboot/vmlinuz  /var/lib/tftpboot/centos7
        cp /mnt/images/pxeboot/initrd.img  /var/lib/tftpboot/centos7
        cp -r /mnt/*  /var/ftp/pub/
 
+# cd  /dev/
+# chmod 777 loop0
 
 
    - name: Start 
