@@ -39,7 +39,7 @@
      shell: |
        timedatectl set-ntp true
        timedatectl set-timezone Europe/Berlin
-       cp /etc/dnsmasq.conf  /etc/ backup-dnsmasq.conf
+       cp /etc/dnsmasq.conf  /etc/backup-dnsmasq.conf
 
 
    - name: Create dnsmasq file 
