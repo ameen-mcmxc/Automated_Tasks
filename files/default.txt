@@ -1,10 +1,9 @@
-default 1   # nuumer 1 Wahl von  boot menue auswählen
+default 1  # um die erste Wahl in bot Menu zu nehmen
 prompt 0
 timeout 10
 ONTIMEOUT local
 
 menu title ########## PXE Boot Menu ##########
-
 
 label 1
 menu label ^1) Install CentOS 7 x64 with Local Repo using Kickstart
