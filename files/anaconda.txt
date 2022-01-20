@@ -30,7 +30,7 @@ lang en_GB.UTF-8
 network  --bootproto=dhcp --device=ens33 --onboot=yes --ipv6=auto
 #network  --bootproto=dhcp --device=ens33 --onboot=no --ipv6=auto
 network  --bootproto=dhcp --device=ens34 --onboot=yes --ipv6=auto
-network  --hostname=B4
+network  --hostname=localhost
 
 # Root password
 rootpw --iscrypted $6$1234567891111111$YTaEkEWzqQtAD18lRqa9IlA.PiIiVphHsLgX4CZR/fDFSU7xGx/PAEUuZZy0O2DW8xOUJHbfnOjEU.NkjRMPd1
@@ -54,7 +54,6 @@ clearpart --none --initlabel
 @^minimal
 @core
 kexec-tools
-#nnao
 %end
 
 %addon com_redhat_kdump --enable --reserve-mb='auto'
