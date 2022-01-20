@@ -11,7 +11,7 @@
      yum:
        update_only: yes
 
-   - name: Install General Essential packages
+   - name: Install Essential and helpful packages
      tags: essentials
      yum: 
        name: 
