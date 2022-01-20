@@ -100,7 +100,7 @@
 
    - name: Permit traffic in default zone for some services
      tags: fw
-     ansible.posix.firewalld:
+     firewalld:
        service: "{{ item }}"
        permanent: yes
        state: enabled
@@ -112,7 +112,7 @@
 
    - name: Open some ports in firewall
      tags: fw
-     ansible.posix.firewalld:
+     firewalld:
        port: "{{ item }}"
        permanent: yes
        state: enabled
