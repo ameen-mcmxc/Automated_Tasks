@@ -142,4 +142,4 @@
    - name: Time to mount
      tags: anaconda
      shell: ksvalidator /var/ftp/pub/anaconda-ks.cfg
-     #failed_when: rc !== 0
+     failed_when: rc !== 0
