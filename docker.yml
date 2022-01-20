@@ -11,7 +11,7 @@
      yum:
        update_only: yes
 
-   - name: Install Essential and Helpful packages
+   - name: Install Essential and helpful packages
      tags: essentials
      yum: 
        name: 
@@ -81,4 +81,5 @@
        state: started
        enabled: yes
        masked: no
+
 
