@@ -12,4 +12,4 @@ Notes for Kisckstart files: -
 
 1- The server and the target machine must be on the same network.
 
-2- In my case, kisckstart interface IP in 10.0.0.20, make sure you adjust this to your needs.
+2- In my case, kisckstart interface IP is (10.0.0.20), make sure you adjust this to your needs.
