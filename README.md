@@ -17,3 +17,4 @@ Notes for Kisckstart files: -
 Required commands: -
 
 "ansible-galaxy collection install ansible.posix"
+...
