@@ -1,1 +1,61 @@
 ---
+- hosts: localhost
+  any_errors_fatal: true
+  gather_facts: no
+
+
+  tasks:
+  - name: Update the machine
+    tags: upd
+    yum:
+      update_only: yes
+
+  - name: Install Essential and helpful packages
+    tags: essentials
+    yum:
+      name:
+      - epel-release
+      - nano
+      - net-tools
+      - tcpdump
+      - nmap
+      - git
+      - wget
+      - iproute
+      - psmisc
+      - chrony
+      - telnet
+      - iptables-services
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+      - yamllint
+      - ansible-lint
+      state: latest
+
+  - name: Install Snapd
+    tags: snapd
+    yum:
+      name: snapd
+      state: latest
+
+  - name: Start snap socket
+    tags: systemctl
+    systemd:
+      name: snapd.socket
+      state: started
+      enabled: yes
+      masked: no
+
+  - name: Create symbolic link
+    tags: link
+    file:
+      src: "/var/lib/snapd/snap"
+      dest: "/snap"
+      state: link
+
+  - name: Install microk8s
+    tags: snap
+    snap:
+      name: microk8s
+      state: present
